@@ -4,7 +4,6 @@ FROM base as builder
 
 RUN microdnf -y --nodocs install \
         gcc \
-        git \
         libpq-devel \
         make \
         python3.12 \
@@ -23,10 +22,18 @@ FROM base as final
 ENV VENV=/opt/venvs/ci
 ENV PATH="${VENV}/bin:$PATH"
 ENV PYTHONPATH=/opt/venvs/ci/
+ENV HOME=/var/lib/ci
 
 COPY --from=builder /opt/venvs/ /opt/venvs/
 
 RUN microdnf install -y --nodocs \
     libpq \
+    git \
+    make \
     python3.12 \
     && rm -rf /var/cache/yum/*
+
+RUN useradd --key HOME_MODE=0775 --uid 1042 --gid 0 --create-home --home-dir "${HOME}" ci
+
+USER ci
+WORKDIR $HOME
