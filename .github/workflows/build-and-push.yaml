@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+  pull_request:
+    branches:
+      - main
+
 jobs:
   build-and-push:
     name: Build and push
@@ -36,4 +40,4 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             quay.io/roadmap/ci-data:latest
-            quay.io/roadmap/ci-data:${{ github.ref_name }}
+            quay.io/roadmap/ci-data:${{ github.head_ref || github.ref_name }}
