@@ -23,7 +23,7 @@ mdurl==0.1.2
 prometheus-fastapi-instrumentator==7.1.0
 prometheus_client==0.22.1
 psycopg==3.2.9
-psycopg-c==3.2.9
+psycopg-binary==3.2.9
 pydantic==2.11.7
 pydantic-settings==2.10.1
 pydantic_core==2.33.2
