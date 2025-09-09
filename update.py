@@ -1,28 +1,30 @@
 #!/usr/bin/env python
 
 import pathlib
-import sys
 import urllib.request
 
 
 def main():
     url = "https://raw.githubusercontent.com/RedHatInsights/digital-roadmap-backend/main/requirements"
     files = [
-        "requirements",
-        "requirements-test",
+        "requirements.in",
+        "requirements-test.in",
     ]
-    print(url)
-    requirements = []
+
+    requirements_in = pathlib.Path("requirements.in")
+    requirements = set(requirements_in.read_text().splitlines())
     for file in files:
-        with urllib.request.urlopen(f"{url}/{file}-{sys.version_info.major}.{sys.version_info.minor}.txt") as f:
+        with urllib.request.urlopen(f"{url}/{file}") as f:
             data = f.read().decode()
 
-        requirements.extend(data.splitlines())
+        requirements.update(data.splitlines())
 
-    requirements = sorted((req for req in requirements if "-r" != req[:2]), key=str.lower)
-    requirements = [req for req in requirements if "psycopg-c" not in req]
+    requirements.remove("psycopg[c]")
+    requirements.add("psycopg")
+    requirements = sorted(requirements)
 
-    pathlib.Path("requirements.txt").write_text("\n".join(requirements))
+    requirements_in.write_text("\n".join(requirements) + "\n")
+
 
 if __name__ == "__main__":
     main()
