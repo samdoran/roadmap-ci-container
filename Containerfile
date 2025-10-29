@@ -5,6 +5,7 @@ ARG UID=1001
 RUN microdnf -y --nodocs install \
         git \
         libpq \
+        libatomic \
         make \
         python3.12 \
     && microdnf clean all
