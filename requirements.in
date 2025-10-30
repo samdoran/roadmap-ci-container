@@ -1,5 +1,7 @@
 aiohttp
 app-common-python
+asgi-correlation-id
+ddtrace
 faker
 fastapi[standard]
 graphviz
@@ -20,3 +22,4 @@ requests
 ruff
 sentry-sdk
 sqlalchemy
+structlog
